@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,36 +19,58 @@ import static org.junit.jupiter.api.Assertions.*;
 class DrawRectangleTest
 {
     WebDriver driver;
+    Actions actions;
+
     @BeforeEach
     void setUp() {
-        // Create a new instance of the Chrome driver
+        // Set up the WebDriver and initialize the Actions object
         driver = new ChromeDriver();
-        // Open the web page
-        driver.get("https://wbo.ophir.dev/");
-        // Maximize the browser window
+        actions = new Actions(driver);
         driver.manage().window().maximize();
-        // Wait implicitly for 10 seconds
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
     @DisplayName("Test drawing a rectangle")
-    void DrawRectangle()
+    void DrawRectangle() throws InterruptedException
     {
-        // Wait for the board to load
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"actions\"]/div[2]/a")));
+        driver.get("https://wbo.ophir.dev/");
 
-        // Click on the "Create a private board" button
-        WebElement createBoardButton = driver.findElement(By.xpath("//*[@id=\"actions\"]/div[2]/a"));
-        createBoardButton.click();
+        //Wait for the page to load
+        Thread.sleep(5000);
 
-        //Wait for the rectangle tool to be visible
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("toolID-Rectangle")));
+        //Create a private board with a name
+        WebElement boardNameField = driver.findElement(By.id("board"));
+        boardNameField.sendKeys("Test Board");
+        WebElement goButton = driver.findElement(By.xpath("//*[@id=\"named-board-form\"]/input[2]"));
+        goButton.click();
+        /*
+        WebElement createPrivateBoardButton = driver.findElement(By.xpath("//*[@id=\"actions\"]/div[2]/a"));
+        createPrivateBoardButton.click();
+         */
 
-        // Click on the "Rectangle" icon
-        // The tool can also be selected by pressing the "r" key on the keyboard
-        WebElement pencilIcon = driver.findElement(By.id("toolID-Pencil"));
-        pencilIcon.click();
+        //Wait for the board to load
+        Thread.sleep(1000);
+
+        //Select the rectangle tool
+        WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
+        rectangleTool.click();
+
+        // Move the mouse cursor to the center of the screen
+        actions.moveByOffset(500, 500).perform();
+
+        // Hold the mouse button down
+        actions.clickAndHold().perform();
+
+        // Move the mouse to the right for 0.5 seconds
+        actions.moveByOffset(500, 0).pause(500).perform();
+
+        //Wait for 0.5 seconds, click, drag down, release
+
+        // Move the mouse to the bottom for 0.5 seconds
+        actions.moveByOffset(0, 200).pause(500).perform();
+        actions.release().perform();
+
+        // Wait for the mouse dragging to be finished
+        Thread.sleep(1000);
     }
 }
