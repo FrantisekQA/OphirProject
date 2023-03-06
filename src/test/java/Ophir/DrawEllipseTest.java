@@ -12,8 +12,8 @@ import org.openqa.selenium.interactions.Actions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DrawRectangleTest
-{
+class DrawEllipseTest {
+
     WebDriver driver;
     Actions actions;
 
@@ -26,7 +26,7 @@ class DrawRectangleTest
     }
 
     @Test
-    @DisplayName("Test drawing with a pencil")
+    @DisplayName("Test drawing a rectangle")
     void DrawRectangle() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
@@ -43,9 +43,9 @@ class DrawRectangleTest
         //Wait for the board to load
         Thread.sleep(1000);
 
-        //Select the rectangle tool
-        WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
-        rectangleTool.click();
+        //Select the ellipse tool
+        WebElement ellipseTool = driver.findElement(By.id("toolID-Ellipse"));
+        ellipseTool.click();
 
         // Move the mouse cursor to the center of the screen
         actions.moveByOffset(500, 500).perform();
@@ -69,4 +69,5 @@ class DrawRectangleTest
         // Close the browser
         driver.quit();
     }
+
 }
