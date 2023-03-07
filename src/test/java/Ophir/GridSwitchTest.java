@@ -1,6 +1,5 @@
 package Ophir;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WriteTextTest {
+class GridSwitchTest {
     WebDriver driver;
     Actions actions;
 
@@ -26,8 +25,8 @@ class WriteTextTest {
     }
 
     @Test
-    @DisplayName("Test entering text")
-    void DrawRectangle() throws InterruptedException
+    @DisplayName("Switch between grid and dots")
+    void GridSwitch() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
 
@@ -36,34 +35,19 @@ class WriteTextTest {
 
         //Create a private board with a name
         WebElement boardNameField = driver.findElement(By.id("board"));
-        boardNameField.sendKeys("Test Board");
+        boardNameField.sendKeys("Test Board 2");
         WebElement goButton = driver.findElement(By.xpath("//*[@id=\"named-board-form\"]/input[2]"));
         goButton.click();
 
         //Wait for the board to load
         Thread.sleep(1000);
 
-        //Select the Text tool
-        WebElement textTool = driver.findElement(By.id("toolID-Text"));
-        textTool.click();
+        WebElement grid = driver.findElement(By.id("toolID-Grid"));
+        grid.click();
 
-        // Move the mouse cursor to the center of the screen
-        actions.moveByOffset(500, 500).perform();
+        //Check if the fill has been changed to "url(#grid)"
+        grid.click();
+        //Assert that the fill has been changed to "url(dots)"
 
-        // Click on the screen so that the text field appears
-        actions.click().perform();
-
-        actions.sendKeys("This is some text for testing").perform();
-        Thread.sleep(500);
-
-        actions.sendKeys(Keys.ENTER).perform();
-
-        Thread.sleep(1000);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Close the browser
-        driver.quit();
     }
 }
