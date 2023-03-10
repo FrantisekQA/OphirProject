@@ -48,8 +48,8 @@ class DrawStraightLineTestTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("toolID-Straight line")));
 
         // Click on the "Straight line" icon
-        WebElement pencilIcon = driver.findElement(By.id("toolID-Pencil"));
-        pencilIcon.click();
+        WebElement lineIcon = driver.findElement(By.id("toolID-Pencil"));
+        lineIcon.click();
 
         /// Move the mouse cursor to the center of the screen
         Actions builder = new Actions(driver);

@@ -39,12 +39,12 @@ class OpacityTest {
         //Wait for the board to load
         Thread.sleep(1000);
 
-        //Find the opacity tool
+        //Locate the Opacity tool
         WebElement opacity = driver.findElement(By.id("opacityIndicator"));
         actions.moveToElement(opacity).perform();
         System.out.println("The mouse has been hovered over the opacity tool");
 
-        //Find the slider
+        //Locate the opacity slider
         WebElement opacitySlider = driver.findElement(By.id("chooseOpacity"));
         actions.dragAndDropBy(opacitySlider,-50,0).perform();
         System.out.println("The opacity has been lowered");
