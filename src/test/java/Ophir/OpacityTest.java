@@ -48,6 +48,23 @@ class OpacityTest {
         WebElement opacitySlider = driver.findElement(By.id("chooseOpacity"));
         actions.dragAndDropBy(opacitySlider,-50,0).perform();
         System.out.println("The opacity has been lowered");
+
+        DrawLine();
+    }
+    public void DrawLine() throws InterruptedException
+    {
+        WebElement lineTool = driver.findElement(By.id("toolID-Straight line"));
+        lineTool.click();
+        actions.moveByOffset(500, 0).perform();
+
+        // Hold the mouse button down
+        actions.clickAndHold().perform();
+
+        // Move the mouse to the right for 0.5 seconds
+        int offset = 100;
+        actions.moveByOffset(-500, offset++).pause(500).perform();
+        actions.release().perform();
+        Thread.sleep(2000);
     }
 
 }
