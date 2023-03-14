@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +19,10 @@ class MoveHandTest {
     @BeforeEach
     void setUp() {
         // Set up the WebDriver and initialize the Actions object
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+
+        driver = new ChromeDriver(options);
         actions = new Actions(driver);
         driver.manage().window().maximize();
     }
@@ -41,7 +45,6 @@ class MoveHandTest {
         //Wait for the board to load
         Thread.sleep(1000);
 
-        /*
         // select the "Rectangle" tool
         WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
         rectangleTool.click();
@@ -59,16 +62,27 @@ class MoveHandTest {
         actions.moveByOffset(0, 200).pause(500).perform();
         actions.release().perform();
 
-         */
 
         // select the "Hand" tool
         WebElement handTool = driver.findElement(By.id("toolID-Hand"));
         handTool.click();
 
-        // move the mouse cursor to the previously drawn rectangle and move it to the right
-        WebElement rectangle = driver.findElement(By.id("rley516d1s"));
-        actions.moveToElement(rectangle).clickAndHold().moveByOffset(50, 0).release().perform();
+        WebElement canvas = driver.findElement(By.id("canvas"));
+        actions.clickAndHold(canvas).perform();
+        actions.moveByOffset(-500,0).pause(500).perform();
+        actions.release().perform();
 
+        actions.clickAndHold(canvas).perform();
+        actions.moveByOffset(500,0).pause(500).perform();
+        actions.release().perform();
+
+        //TODO: Fix this
+        //Select the selector tool
+        handTool.click();
+        actions.moveByOffset(400,-100).pause(500).perform();
+        actions.clickAndHold(canvas).perform();
+        actions.moveByOffset(-100,200).pause(500).perform();
+        actions.release().perform();
     }
 
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,38 +19,37 @@ import java.util.concurrent.TimeUnit;
 class BrowserTestTest {
     WebDriver driver;
 
+    Actions actions;
+
     @BeforeEach
     void setUp() {
-        // Create a new instance of the Chrome driver
-        driver = new ChromeDriver();
-        // Open the web page
-        driver.get("https://wbo.ophir.dev/");
-        // Maximize the browser window
+        // Set up the WebDriver and initialize the Actions object
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+
+        driver = new ChromeDriver(options);
+        actions = new Actions(driver);
         driver.manage().window().maximize();
-        // Wait implicitly for 10 seconds
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
     @DisplayName("Test drawing with the pencil")
-    void DrawPencil() {
+    void DrawPencil() throws InterruptedException
+    {
 
-        // Wait for the board to load
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"actions\"]/div[2]/a")));
+        driver.get("https://wbo.ophir.dev/");
 
-        /*
-        // Verify that the board was created successfully
-        WebElement boardTitle = driver.findElement(By.xpath("//h1[contains(text(), 'My Board')]"));
-        assertEquals("My Board", boardTitle.getText());
+        //Wait for the page to load
+        Thread.sleep(5000);
 
-         */
+        //Create a private board with a name
+        WebElement boardNameField = driver.findElement(By.id("board"));
+        boardNameField.sendKeys("Test Board");
+        WebElement goButton = driver.findElement(By.xpath("//*[@id=\"named-board-form\"]/input[2]"));
+        goButton.click();
 
-        // Click on the "Create a private board" button
-        WebElement createBoardButton = driver.findElement(By.xpath("//*[@id=\"actions\"]/div[2]/a"));
-        createBoardButton.click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("toolID-Pencil")));
+        //Wait for the board to load
+        Thread.sleep(1000);
 
         // Click on the "Pencil" icon
         WebElement pencilIcon = driver.findElement(By.id("toolID-Pencil"));
@@ -57,16 +57,16 @@ class BrowserTestTest {
 
         // Move the mouse cursors to the center of the screen
         Actions action = new Actions(driver);
-        action.moveToElement(driver.findElement(By.tagName("body")), 0, 0).build().perform();
+        actions.moveToElement(driver.findElement(By.tagName("body")), 0, 0).build().perform();
 
         // Hold the mouse button down
-        action.clickAndHold().build().perform();
+        actions.clickAndHold().build().perform();
 
         // Move the mouse to the right for 0.5 seconds
-        action.moveByOffset(500, 0).pause(500).build().perform();
+        actions.moveByOffset(500, 0).pause(500).build().perform();
 
         // Release the mouse button
-        action.release().build().perform();
+        actions.release().build().perform();
     }
 
     @AfterEach

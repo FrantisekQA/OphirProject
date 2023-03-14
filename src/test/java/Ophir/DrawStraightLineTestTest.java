@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,32 +21,35 @@ import static org.junit.jupiter.api.Assertions.*;
 class DrawStraightLineTestTest {
 
     WebDriver driver;
+
+    Actions actions;
     @BeforeEach
     void setUp() {
-        // Create a new instance of the Chrome driver
-        driver = new ChromeDriver();
-        // Open the web page
-        driver.get("https://wbo.ophir.dev/");
-        // Maximize the browser window
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+
+        driver = new ChromeDriver(options);
+        actions = new Actions(driver);
         driver.manage().window().maximize();
-        // Wait implicitly for 10 seconds
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
     @DisplayName("Test drawing a straight line")
-    void DrawLine()
+    void DrawLine() throws InterruptedException
     {
-        // Wait for the board to load
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"actions\"]/div[2]/a")));
+        driver.get("https://wbo.ophir.dev/");
 
-        // Click on the "Create a private board" button
-        WebElement createBoardButton = driver.findElement(By.xpath("//*[@id=\"actions\"]/div[2]/a"));
-        createBoardButton.click();
+        //Wait for the page to load
+        Thread.sleep(5000);
 
-        //Wait for the straight line tool to be visible
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("toolID-Straight line")));
+        //Create a private board with a name
+        WebElement boardNameField = driver.findElement(By.id("board"));
+        boardNameField.sendKeys("Test Board");
+        WebElement goButton = driver.findElement(By.xpath("//*[@id=\"named-board-form\"]/input[2]"));
+        goButton.click();
+
+        //Wait for the board to load
+        Thread.sleep(1000);
 
         // Click on the "Straight line" icon
         WebElement lineIcon = driver.findElement(By.id("toolID-Pencil"));
@@ -60,10 +64,46 @@ class DrawStraightLineTestTest {
 
         // Move the mouse to the right for 0.5 seconds
         builder.moveByOffset(500, 0).pause(500).perform();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         // Release the mouse button
         builder.release().perform();
+
+    }
+
+    @Test
+    @DisplayName("Test drawing a straighter line")
+    void DrawStraigtLine() throws InterruptedException
+    {
+        driver.get("https://wbo.ophir.dev/");
+
+        //Wait for the page to load
+        Thread.sleep(5000);
+
+        //Create a private board with a name
+        WebElement boardNameField = driver.findElement(By.id("board"));
+        boardNameField.sendKeys("Test Board");
+        WebElement goButton = driver.findElement(By.xpath("//*[@id=\"named-board-form\"]/input[2]"));
+        goButton.click();
+
+        //Wait for the board to load
+        Thread.sleep(1000);
+
+        // Click on the "Straight line" icon
+        WebElement lineIcon = driver.findElement(By.id("toolID-Straight line"));
+        lineIcon.click();
+        lineIcon.click();
+
+        /// Move the mouse cursor to the center of the screen
+        actions.moveByOffset(500, 400).perform();
+
+        // Hold the mouse button down
+        actions.clickAndHold().perform();
+
+        // Move the mouse to the right for 0.5 seconds
+        actions.moveByOffset(500, 0).pause(500).perform();
+
+        // Release the mouse button
+        actions.release().perform();
 
     }
 
