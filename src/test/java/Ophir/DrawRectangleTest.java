@@ -1,9 +1,6 @@
 package Ophir;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,9 +27,11 @@ class DrawRectangleTest
     }
 
     @Test
-    @DisplayName("Test drawing with a pencil")
+    @DisplayName("Test drawing with a rectangle")
     void DrawRectangle() throws InterruptedException
     {
+        Assertions.assertTrue(true);
+        System.out.println("The test method works as expected");
         driver.get("https://wbo.ophir.dev/");
 
         //Wait for the page to load
@@ -71,6 +70,8 @@ class DrawRectangleTest
     @DisplayName("Test drawing a square")
     void DrawSquare() throws InterruptedException
     {
+        Assertions.assertTrue(false);
+        System.out.println("The test method is not working as expected");
         driver.get("https://wbo.ophir.dev/");
 
         //Wait for the page to load

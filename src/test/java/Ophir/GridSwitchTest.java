@@ -1,5 +1,6 @@
 package Ophir;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,5 +54,11 @@ class GridSwitchTest {
         grid.click();
         //Assert that the fill has been changed to "url(dots)"
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Close the browser
+        driver.quit();
     }
 }

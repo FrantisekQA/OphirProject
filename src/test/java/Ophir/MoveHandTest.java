@@ -1,5 +1,6 @@
 package Ophir;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,6 +84,12 @@ class MoveHandTest {
         actions.clickAndHold(canvas).perform();
         actions.moveByOffset(-100,200).pause(500).perform();
         actions.release().perform();
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Close the browser
+        driver.quit();
     }
 
 }

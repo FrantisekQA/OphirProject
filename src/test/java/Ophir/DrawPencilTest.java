@@ -1,9 +1,7 @@
 package Ophir;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import dev.failsafe.internal.util.Assert;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -51,6 +49,11 @@ class BrowserTestTest {
         //Wait for the board to load
         Thread.sleep(1000);
 
+        String ActualTitle = driver.getTitle();
+        String ExpectedTitle = "Test Board | WBO | Collaborative whiteboard";
+        Assertions.assertEquals(ActualTitle, ExpectedTitle);
+        System.out.println("Assertion passed");
+
         // Click on the "Pencil" icon
         WebElement pencilIcon = driver.findElement(By.id("toolID-Pencil"));
         pencilIcon.click();
@@ -72,6 +75,6 @@ class BrowserTestTest {
     @AfterEach
     void tearDown() {
         // Close the browser
-        //driver.quit();
+        driver.quit();
     }
 }

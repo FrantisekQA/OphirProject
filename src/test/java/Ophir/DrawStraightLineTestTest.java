@@ -1,9 +1,7 @@
 package Ophir;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.Allure;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -109,5 +107,7 @@ class DrawStraightLineTestTest {
 
     @AfterEach
     void tearDown() {
+        // Close the browser
+        driver.quit();
     }
 }

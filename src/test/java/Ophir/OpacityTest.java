@@ -1,6 +1,7 @@
 package Ophir;
 
 import io.opentelemetry.exporter.logging.SystemOutLogRecordExporter;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,6 +70,12 @@ class OpacityTest {
         actions.moveByOffset(-500, offset++).pause(500).perform();
         actions.release().perform();
         Thread.sleep(2000);
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Close the browser
+        driver.quit();
     }
 
 }

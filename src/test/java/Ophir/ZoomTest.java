@@ -1,5 +1,6 @@
 package Ophir;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,8 +72,12 @@ class ZoomTest {
 
         WebElement board = driver.findElement(By.id("canvas"));
         actions.click(board).build().perform();
+    }
 
-
+    @AfterEach
+    void tearDown() {
+        // Close the browser
+        driver.quit();
     }
 
 }

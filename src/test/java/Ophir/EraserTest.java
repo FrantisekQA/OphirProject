@@ -1,5 +1,6 @@
 package Ophir;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,5 +71,11 @@ class EraserTest {
         WebElement rectangle = driver.findElement(By.id("rley5i7qg8"));
         actions.moveToElement(rectangle).click().perform();
 
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Close the browser
+        driver.quit();
     }
 }
