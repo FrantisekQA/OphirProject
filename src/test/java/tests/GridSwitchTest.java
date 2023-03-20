@@ -1,7 +1,6 @@
-package Ophir;
+package tests;
 
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.junit.jupiter.api.AfterEach;
@@ -9,16 +8,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class EraserTest {
+class GridSwitchTest {
     WebDriver driver;
     Actions actions;
     Logger Log = Logger.getLogger("Log");
@@ -49,9 +45,10 @@ class EraserTest {
         Log.info("A driver has been instantiated");
         driver.manage().window().maximize();
     }
+
     @Test
-    @DisplayName("Test entering text")
-    void Erase() throws InterruptedException
+    @DisplayName("Switch between grid and dots")
+    void GridSwitch() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
         //Wait for the page to load
@@ -67,30 +64,12 @@ class EraserTest {
         Thread.sleep(1000);
         Log.info("A new board has been created");
 
-        //Select the Text tool
-        WebElement textTool = driver.findElement(By.id("toolID-Text"));
-        textTool.click();
+        WebElement grid = driver.findElement(By.id("toolID-Grid"));
+        grid.click();
 
-        // Move the mouse cursor to the center of the screen
-        actions.moveByOffset(200, 200).perform();
-
-        // Click on the screen so that the text field appears
-        actions.click().perform();
-
-        actions.sendKeys("Damjan je budala").perform();
-        Thread.sleep(500);
-
-        actions.sendKeys(Keys.ENTER).perform();
-
-        Thread.sleep(1000);
-
-        //Click on the eraser tool
-        WebElement eraser = driver.findElement(By.id("toolID-Eraser"));
-        eraser.click();
-        Thread.sleep(1000);
-
-        WebElement rectangle = driver.findElement(By.id("rley5i7qg8"));
-        actions.moveToElement(rectangle).click().perform();
+        //Check if the fill has been changed to "url(#grid)"
+        grid.click();
+        //Assert that the fill has been changed to "url(dots)"
 
     }
 

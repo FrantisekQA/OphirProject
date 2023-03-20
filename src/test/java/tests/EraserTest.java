@@ -1,7 +1,6 @@
-package Ophir;
+package tests;
 
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.junit.jupiter.api.AfterEach;
@@ -16,9 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class WriteTextTest {
+class EraserTest {
     WebDriver driver;
     Actions actions;
     Logger Log = Logger.getLogger("Log");
@@ -49,10 +46,9 @@ class WriteTextTest {
         Log.info("A driver has been instantiated");
         driver.manage().window().maximize();
     }
-
     @Test
     @DisplayName("Test entering text")
-    void DrawRectangle() throws InterruptedException
+    void Erase() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
         //Wait for the page to load
@@ -73,21 +69,30 @@ class WriteTextTest {
         textTool.click();
 
         // Move the mouse cursor to the center of the screen
-        actions.moveByOffset(500, 500).perform();
+        actions.moveByOffset(200, 200).perform();
 
         // Click on the screen so that the text field appears
         actions.click().perform();
 
-        actions.sendKeys("This is some text for testing").perform();
+        actions.sendKeys("Damjan je budala").perform();
         Thread.sleep(500);
 
         actions.sendKeys(Keys.ENTER).perform();
 
         Thread.sleep(1000);
+
+        //Click on the eraser tool
+        WebElement eraser = driver.findElement(By.id("toolID-Eraser"));
+        eraser.click();
+        Thread.sleep(1000);
+
+        WebElement rectangle = driver.findElement(By.id("rley5i7qg8"));
+        actions.moveToElement(rectangle).click().perform();
+
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         // Close the browser
         driver.quit();
     }

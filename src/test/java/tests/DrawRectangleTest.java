@@ -1,27 +1,21 @@
-package Ophir;
+package tests;
 
-import io.qameta.allure.Allure;
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-class DrawStraightLineTestTest {
-
+//@RunWith(MyTestRunner.class)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class DrawRectangleTest
+{
     WebDriver driver;
     Actions actions;
     Logger Log = Logger.getLogger("Log");
@@ -54,11 +48,12 @@ class DrawStraightLineTestTest {
     }
 
     @Test
-    @DisplayName("Test drawing a straight line")
-    void DrawLine() throws InterruptedException
-    {
-        driver.get("https://wbo.ophir.dev/");
+    @DisplayName("Test drawing with a rectangle")
+    void DrawRectangle() throws InterruptedException, IOException {
 
+        Assertions.assertTrue(true);
+        System.out.println("The test method works as expected");
+        driver.get("https://wbo.ophir.dev/");
         //Wait for the page to load
         Thread.sleep(1000);
         Log.info("Web application has been launched");
@@ -72,33 +67,37 @@ class DrawStraightLineTestTest {
         //Wait for the board to load
         Thread.sleep(1000);
 
-        // Click on the "Straight line" icon
-        WebElement lineIcon = driver.findElement(By.id("toolID-Pencil"));
-        lineIcon.click();
+        //Select the rectangle tool
+        WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
+        rectangleTool.click();
 
-        /// Move the mouse cursor to the center of the screen
-        Actions builder = new Actions(driver);
-        builder.moveByOffset(500, 500).perform();
+        // Move the mouse cursor to the center of the screen
+        actions.moveByOffset(500, 500).perform();
 
         // Hold the mouse button down
-        builder.clickAndHold().perform();
+        actions.clickAndHold().perform();
 
         // Move the mouse to the right for 0.5 seconds
-        builder.moveByOffset(500, 0).pause(500).perform();
+        actions.moveByOffset(500, 0).pause(500).perform();
 
-        // Release the mouse button
-        builder.release().perform();
+        // Move the mouse to the bottom for 0.5 seconds
+        actions.moveByOffset(0, 200).pause(500).perform();
+        actions.release().perform();
 
+        // Wait for the mouse dragging to be finished
+        Thread.sleep(1000);
     }
-
     @Test
-    @DisplayName("Test drawing a straighter line")
-    void DrawStraigtLine() throws InterruptedException
+    @DisplayName("Test drawing a square")
+    void DrawSquare()  throws InterruptedException
     {
+        Assertions.assertTrue(false);
+        System.out.println("The test method is not working as expected");
         driver.get("https://wbo.ophir.dev/");
 
+
         //Wait for the page to load
-        Thread.sleep(5000);
+        Thread.sleep(1000);
 
         //Create a private board with a name
         WebElement boardNameField = driver.findElement(By.id("board"));
@@ -109,13 +108,13 @@ class DrawStraightLineTestTest {
         //Wait for the board to load
         Thread.sleep(1000);
 
-        // Click on the "Straight line" icon
-        WebElement lineIcon = driver.findElement(By.id("toolID-Straight line"));
-        lineIcon.click();
-        lineIcon.click();
+        //Select the rectangle tool
+        WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
+        rectangleTool.click();
+        rectangleTool.click();
 
-        /// Move the mouse cursor to the center of the screen
-        actions.moveByOffset(500, 400).perform();
+        // Move the mouse cursor to the center of the screen
+        actions.moveByOffset(500, 500).perform();
 
         // Hold the mouse button down
         actions.clickAndHold().perform();
@@ -123,13 +122,15 @@ class DrawStraightLineTestTest {
         // Move the mouse to the right for 0.5 seconds
         actions.moveByOffset(500, 0).pause(500).perform();
 
-        // Release the mouse button
+        // Move the mouse to the bottom for 0.5 seconds
+        actions.moveByOffset(0, 200).pause(500).perform();
         actions.release().perform();
 
+        // Wait for the mouse dragging to be finished
+        Thread.sleep(1000);
     }
-
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         // Close the browser
         driver.quit();
     }

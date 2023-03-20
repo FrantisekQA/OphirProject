@@ -1,24 +1,24 @@
-package Ophir;
+package tests;
 
-import org.apache.log4j.*;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class DownloadTest {
+class WriteTextTest {
     WebDriver driver;
     Actions actions;
-
-    Logger Log = LogManager.getLogger("Log");
+    Logger Log = Logger.getLogger("Log");
 
     @BeforeEach
     void setUp() {
@@ -48,13 +48,13 @@ class DownloadTest {
     }
 
     @Test
-    @DisplayName("Download the shape")
-    void DownloadShape() throws InterruptedException
+    @DisplayName("Test entering text")
+    void DrawRectangle() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
-        Log.info("Web application has been launched");
-
+        //Wait for the page to load
         Thread.sleep(1000);
+        Log.info("Web application has been launched");
 
         //Create a private board with a name
         WebElement boardNameField = driver.findElement(By.id("board"));
@@ -65,41 +65,26 @@ class DownloadTest {
         Thread.sleep(1000);
         Log.info("A new board has been created");
 
-        //Draw a shape first
-        //Select the rectangle tool
-        WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
-        rectangleTool.click();
-        Log.info("The rectangle tool has been selected");
+        //Select the Text tool
+        WebElement textTool = driver.findElement(By.id("toolID-Text"));
+        textTool.click();
 
-        try {
-            // Move the mouse cursor to the center of the screen
-            actions.moveByOffset(500, 500).perform();
+        // Move the mouse cursor to the center of the screen
+        actions.moveByOffset(500, 500).perform();
 
-            // Hold the mouse button down
-            actions.clickAndHold().perform();
+        // Click on the screen so that the text field appears
+        actions.click().perform();
 
-            // Move the mouse to the right for 0.5 seconds
-            actions.moveByOffset(500, 0).pause(500).perform();
+        actions.sendKeys("This is some text for testing").perform();
+        Thread.sleep(500);
 
-            // Move the mouse to the bottom for 0.5 seconds
-            actions.moveByOffset(0, 200).pause(500).perform();
-            actions.release().perform();
+        actions.sendKeys(Keys.ENTER).perform();
 
-            // Wait for the mouse dragging to be finished
-            Thread.sleep(1000);
-            Log.info("A rectangle has been drawn");
-        }
-        catch (Exception exp){
-            Log.warn("The following exception was raised: ", exp);
-        }
-
-        WebElement downloadTool = driver.findElement(By.id("toolID-Download"));
-        downloadTool.click();
-        Log.info("The image has been downloaded");
+        Thread.sleep(1000);
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         // Close the browser
         driver.quit();
     }

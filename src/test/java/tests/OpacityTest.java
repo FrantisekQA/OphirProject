@@ -1,7 +1,6 @@
-package Ophir;
+package tests;
 
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.junit.jupiter.api.AfterEach;
@@ -9,16 +8,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class GridSwitchTest {
+class OpacityTest {
     WebDriver driver;
     Actions actions;
     Logger Log = Logger.getLogger("Log");
@@ -51,11 +47,10 @@ class GridSwitchTest {
     }
 
     @Test
-    @DisplayName("Switch between grid and dots")
-    void GridSwitch() throws InterruptedException
+    @DisplayName("Change the opacity")
+    void ChangeOpacity() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
-        //Wait for the page to load
         Thread.sleep(1000);
         Log.info("Web application has been launched");
 
@@ -68,13 +63,32 @@ class GridSwitchTest {
         Thread.sleep(1000);
         Log.info("A new board has been created");
 
-        WebElement grid = driver.findElement(By.id("toolID-Grid"));
-        grid.click();
+        //Locate the Opacity tool
+        WebElement opacity = driver.findElement(By.id("opacityIndicator"));
+        actions.moveToElement(opacity).perform();
+        System.out.println("The mouse has been hovered over the opacity tool");
 
-        //Check if the fill has been changed to "url(#grid)"
-        grid.click();
-        //Assert that the fill has been changed to "url(dots)"
+        //Locate the opacity slider
+        WebElement opacitySlider = driver.findElement(By.id("chooseOpacity"));
+        actions.dragAndDropBy(opacitySlider,-50,0).perform();
+        System.out.println("The opacity has been lowered");
 
+        DrawLine();
+    }
+    public void DrawLine() throws InterruptedException
+    {
+        WebElement lineTool = driver.findElement(By.id("toolID-Straight line"));
+        lineTool.click();
+        actions.moveByOffset(500, 0).perform();
+
+        // Hold the mouse button down
+        actions.clickAndHold().perform();
+
+        // Move the mouse to the right for 0.5 seconds
+        int offset = 100;
+        actions.moveByOffset(-500, offset++).pause(500).perform();
+        actions.release().perform();
+        Thread.sleep(2000);
     }
 
     @AfterEach
@@ -82,4 +96,5 @@ class GridSwitchTest {
         // Close the browser
         driver.quit();
     }
+
 }

@@ -1,24 +1,17 @@
-package Ophir;
+package tests;
 
+import core.TestBase;
 import org.apache.log4j.*;
-import org.apache.log4j.xml.DOMConfigurator;
-import org.apache.logging.log4j.LogManager;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.w3c.dom.DOMConfiguration;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ColorTest {
     WebDriver driver;

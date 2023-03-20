@@ -1,10 +1,6 @@
-package Ophir;
+package tests;
 
-import io.opentelemetry.exporter.logging.SystemOutLogRecordExporter;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Logger;
-import org.apache.log4j.SimpleLayout;
+import org.apache.log4j.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,10 +12,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
-class OpacityTest {
+class DownloadTest {
     WebDriver driver;
     Actions actions;
-    Logger Log = Logger.getLogger("Log");
+
+    Logger Log = LogManager.getLogger("Log");
 
     @BeforeEach
     void setUp() {
@@ -49,12 +46,13 @@ class OpacityTest {
     }
 
     @Test
-    @DisplayName("Change the opacity")
-    void ChangeOpacity() throws InterruptedException
+    @DisplayName("Download the shape")
+    void DownloadShape() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
-        Thread.sleep(1000);
         Log.info("Web application has been launched");
+
+        Thread.sleep(1000);
 
         //Create a private board with a name
         WebElement boardNameField = driver.findElement(By.id("board"));
@@ -65,32 +63,37 @@ class OpacityTest {
         Thread.sleep(1000);
         Log.info("A new board has been created");
 
-        //Locate the Opacity tool
-        WebElement opacity = driver.findElement(By.id("opacityIndicator"));
-        actions.moveToElement(opacity).perform();
-        System.out.println("The mouse has been hovered over the opacity tool");
+        //Draw a shape first
+        //Select the rectangle tool
+        WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
+        rectangleTool.click();
+        Log.info("The rectangle tool has been selected");
 
-        //Locate the opacity slider
-        WebElement opacitySlider = driver.findElement(By.id("chooseOpacity"));
-        actions.dragAndDropBy(opacitySlider,-50,0).perform();
-        System.out.println("The opacity has been lowered");
+        try {
+            // Move the mouse cursor to the center of the screen
+            actions.moveByOffset(500, 500).perform();
 
-        DrawLine();
-    }
-    public void DrawLine() throws InterruptedException
-    {
-        WebElement lineTool = driver.findElement(By.id("toolID-Straight line"));
-        lineTool.click();
-        actions.moveByOffset(500, 0).perform();
+            // Hold the mouse button down
+            actions.clickAndHold().perform();
 
-        // Hold the mouse button down
-        actions.clickAndHold().perform();
+            // Move the mouse to the right for 0.5 seconds
+            actions.moveByOffset(500, 0).pause(500).perform();
 
-        // Move the mouse to the right for 0.5 seconds
-        int offset = 100;
-        actions.moveByOffset(-500, offset++).pause(500).perform();
-        actions.release().perform();
-        Thread.sleep(2000);
+            // Move the mouse to the bottom for 0.5 seconds
+            actions.moveByOffset(0, 200).pause(500).perform();
+            actions.release().perform();
+
+            // Wait for the mouse dragging to be finished
+            Thread.sleep(1000);
+            Log.info("A rectangle has been drawn");
+        }
+        catch (Exception exp){
+            Log.warn("The following exception was raised: ", exp);
+        }
+
+        WebElement downloadTool = driver.findElement(By.id("toolID-Download"));
+        downloadTool.click();
+        Log.info("The image has been downloaded");
     }
 
     @AfterEach
@@ -98,5 +101,4 @@ class OpacityTest {
         // Close the browser
         driver.quit();
     }
-
 }

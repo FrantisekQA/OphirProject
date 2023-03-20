@@ -1,7 +1,6 @@
-package Ophir;
+package tests;
 
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.junit.jupiter.api.AfterEach;
@@ -14,8 +13,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SizeTest {
     WebDriver driver;
