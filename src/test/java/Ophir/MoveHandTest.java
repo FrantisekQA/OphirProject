@@ -1,5 +1,9 @@
 package Ophir;
 
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,15 +20,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoveHandTest {
     WebDriver driver;
     Actions actions;
+    Logger Log = Logger.getLogger("Log");
 
     @BeforeEach
     void setUp() {
-        // Set up the WebDriver and initialize the Actions object
+        //WebDriver setup
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        //Logger setup
+        /*
+        FileAppender fileAppender = new FileAppender();
+        fileAppender.setFile("logfile.txt");
+        fileAppender.setLayout(new SimpleLayout());
 
+        Log.addAppender(fileAppender);
+        fileAppender.activateOptions();
+         */
+        ConsoleAppender ConsoleAppender = new ConsoleAppender();
+        ConsoleAppender.setLayout(new SimpleLayout());
+
+        Log.addAppender(ConsoleAppender);
+        ConsoleAppender.activateOptions();
+
+        //Driver and actions object initialization
         driver = new ChromeDriver(options);
         actions = new Actions(driver);
+        Log.info("A driver has been instantiated");
         driver.manage().window().maximize();
     }
 
@@ -33,18 +54,18 @@ class MoveHandTest {
     void DrawRectangle() throws InterruptedException
     {
         driver.get("https://wbo.ophir.dev/");
-
         //Wait for the page to load
         Thread.sleep(1000);
+        Log.info("Web application has been launched");
 
         //Create a private board with a name
         WebElement boardNameField = driver.findElement(By.id("board"));
-        boardNameField.sendKeys("Test Board");
+        boardNameField.sendKeys("Test Board 2");
         WebElement goButton = driver.findElement(By.xpath("//*[@id=\"named-board-form\"]/input[2]"));
         goButton.click();
-
         //Wait for the board to load
         Thread.sleep(1000);
+        Log.info("A new board has been created");
 
         // select the "Rectangle" tool
         WebElement rectangleTool = driver.findElement(By.id("toolID-Rectangle"));
